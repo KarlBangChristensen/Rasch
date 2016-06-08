@@ -6,34 +6,18 @@ shinyUI(pageWithSidebar(
   headerPanel("Rasch model"),
 
   sidebarPanel(
-    sliderInput("alpha", 
-                "Intercept", 
-                value = 1,
-                min = -1, 
-                max = 3,
-                step = 0.05),
     
-    sliderInput("beta", 
-                "Slope", 
-                value = 1,
-                min = -1, 
-                max = 3,
-                step = 0.05),
+    radioButtons("Modeltype", "Model type:",
+                 list("Dichtomous Rasch model" = "RM",
+                      "Polytomous Rasch model" = "residuals")),
     
-    br(),
-  
-    radioButtons("outputtype", "Output type:",
-                 list("Points" = "points",
-                      "Residuals" = "residuals",
-                      "Squared residuals" = "sqresiduals")),
-    
-    checkboxInput(inputId = "sse",
-                  label = strong("Show sum of squared residuals"),
+    checkboxInput(inputId = "ICC",
+                  label = strong("Plot Item Characteristic Curves"),
                   value = FALSE)
   ),
   
   mainPanel(
-      plotOutput(outputId = "main_plot", height="600px", width="800px")
+      #plotOutput(outputId = "main_plot", height="600px", width="800px")
   
 ))
 )
