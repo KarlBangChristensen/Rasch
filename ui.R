@@ -1,6 +1,10 @@
 library(shiny)
-library(shiny)
-write.csv(data.frame(a = 1:10, b = letters[1:10]), 'test.csv')
+
+shinyUI(pageWithSidebar(
+  
+  # Application title
+  headerPanel("Rasch model"),
+  write.csv(data.frame(a = 1:10, b = letters[1:10]), 'test.csv')
 runApp(list(ui = fluidPage(
   titlePanel("Uploading Files"),
   sidebarLayout(
@@ -30,11 +34,6 @@ runApp(list(ui = fluidPage(
 )
 )
 
-shinyUI(pageWithSidebar(
-  
-  # Application title
-  headerPanel("Least squares example"),
-  
   sidebarPanel(
     sliderInput("alpha", 
                 "Intercept", 
