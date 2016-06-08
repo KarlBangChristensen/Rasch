@@ -1,9 +1,7 @@
 library(shiny)
 
 shinyUI(pageWithSidebar(
-  
   headerPanel("Rasch model"),
-
     sidebarPanel(
       fileInput('file1', 'Choose CSV File',
                 accept=c('text/csv', 
@@ -26,7 +24,7 @@ shinyUI(pageWithSidebar(
       tableOutput('contents')
     )
   )
-))
+)
     
     radioButtons("Modeltype", "Model type:",
                  list("Dichtomous Rasch model" = "RM",
