@@ -1,4 +1,34 @@
 library(shiny)
+library(shiny)
+write.csv(data.frame(a = 1:10, b = letters[1:10]), 'test.csv')
+runApp(list(ui = fluidPage(
+  titlePanel("Uploading Files"),
+  sidebarLayout(
+    sidebarPanel(
+      fileInput('file1', 'Choose CSV File',
+                accept=c('text/csv',
+                         'text/comma-separated-values,text/plain',
+                         '.csv'))
+    ),
+    mainPanel(
+      tableOutput('contents')
+    )
+  )
+)
+, server = function(input, output, session){
+  myData <- reactive({
+    inFile <- input$file1
+    if (is.null(inFile)) return(NULL)
+    data <- read.csv(inFile$datapath, header = TRUE)
+    data
+  })
+  output$contents <- renderTable({
+    myData()
+  })
+
+}
+)
+)
 
 shinyUI(pageWithSidebar(
   
