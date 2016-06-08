@@ -4,7 +4,7 @@ shinyUI(pageWithSidebar(
   headerPanel("Rasch model"),
     sidebarPanel(
       fileInput('file1', 'Choose CSV File',
-                accept=c('text/csv', 
+                accept=c('text/csv',
                          'text/comma-separated-values,text/plain',
                          '.csv')),
       tags$hr(),
@@ -20,23 +20,15 @@ shinyUI(pageWithSidebar(
                      'Single Quote'="'"),
                    '"')
     ),
-    mainPanel(
-      tableOutput('contents')
-    )
-  )
-)
-    
     radioButtons("Modeltype", "Model type:",
                  list("Dichtomous Rasch model" = "RM",
                       "Polytomous Rasch model" = "residuals")),
-    
     checkboxInput(inputId = "ICC",
                   label = strong("Plot Item Characteristic Curves"),
                   value = FALSE)
   ),
-  
+
   mainPanel(
       #plotOutput(outputId = "main_plot", height="600px", width="800px")
-  
-))
+  ))
 )
