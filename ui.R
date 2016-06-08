@@ -18,8 +18,7 @@ shinyUI(pageWithSidebar(
                    c(None='',
                      'Double Quote'='"',
                      'Single Quote'="'"),
-                   '"')
-    ),
+                   '"'),
     radioButtons("Modeltype", "Model type:",
                  list("Dichtomous Rasch model" = "RM",
                       "Polytomous Rasch model" = "residuals")),
