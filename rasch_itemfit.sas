@@ -524,12 +524,10 @@ proc sql noprint;
 	from _mem;
 quit;
 
-/*
 proc datasets;
 	delete %do _d=1 %to &_nd; &&_var&_d %end; beta eta_temp;
 run;
 quit;
-*/
 option notes;
 title ' ';
 
