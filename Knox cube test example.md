@@ -52,10 +52,6 @@ filename r url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/mast
 ```
 will look only at the non-extreme items
 ```
-
-%let macropath=c:\dropbox\macro;
-%include "&macropath\macros\rasch_include_all.sas";
-
 data in;
 input item_no item_name $ item_text $ max group;
 datalines;
@@ -75,11 +71,17 @@ datalines;
 14 i17 x 1 14
 ;
 run;
+```
+check data and fit Rasch model using conditional maximum likelihood (CML)
+```
 %rasch_data(	data=knox,
             	item_names=in);
 %rasch_CML( 	data=knox,
             	item_names=in,
-				out=CML);
+		out=CML);
+```
+the item parameters
+```
 %rasch_ppar(	DATA=knox, 
 				ITEM_NAMES=in, 
 				DATA_IPAR=cml_ipar, 
