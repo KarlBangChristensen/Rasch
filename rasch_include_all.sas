@@ -1,0 +1,11 @@
+%include 'C:\Dropbox\MACRO\macros\rasch_cml.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_data.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_etatemp.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_gamma.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_itemcfit.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_itemfit.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_mml.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_ppar.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_PW.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_PSI.sas';
+%include 'C:\Dropbox\MACRO\macros\rasch_simu.sas';
