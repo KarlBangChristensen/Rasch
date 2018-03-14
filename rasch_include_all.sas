@@ -10,3 +10,14 @@ filename pp   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/m
 filename pw   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_PW.sas';
 filename psi  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_PSI.sas';
 filename sim  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_simu.sas';
+%include cml;
+%include dat;
+%include eta;
+%include gam;
+%include cfit;
+%include fit;
+%include mml;
+%include pp;
+%include pw;
+%include psi;
+%include sim;
