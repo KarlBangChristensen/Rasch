@@ -436,11 +436,11 @@ proc sql noprint;
 	into :_var1-:_var&_nd.
 	from _mem;
 quit;
-
+/*
 proc datasets;
 	delete %do _d=1 %to &_nd; &&_var&_d %end;;
 run; quit;
-
+*/
 goptions reset=all;
 *ods html;
 
