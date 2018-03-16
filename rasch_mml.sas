@@ -209,12 +209,13 @@ proc sql noprint;
 	from _mem;
 quit;
 
+/*
 proc datasets;
-	delete %do _d=1 %to &_nd; &&_var&_d %end;
-
-;
+	delete %do _d=1 %to &_nd; &&_var&_d %end;;
 run; 
 quit;
+*/
+%put but not really;
 
 option notes;
 title ' ';
