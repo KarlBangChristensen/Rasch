@@ -282,10 +282,6 @@ retain item_name;
   item_name = compress(item||"|"||cat);  
   drop item label cat; 
 run;
-/*-- output files with format as needed for input to other macros --*/
-data &out._eta;
- set _eta_temp;
-run;
 
 /*****************************************/
 /* end of item parameter estimation part */
@@ -422,6 +418,11 @@ run;*/
 /************************************************/
 /* end of likelihood and regression file part   */
 /************************************************/
+
+/*-- output files with format as needed for input to other macros --*/
+data &out._eta;
+ set _eta_temp;
+run;
 
 /******************************/
 /* delete temporary data sets */
