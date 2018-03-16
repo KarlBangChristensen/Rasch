@@ -275,12 +275,16 @@ data _null_;
 run;
 
 
-/*-- output file with format as needed for input to other macros --*/
+/*-- output files with format as needed for input to other macros --*/
 data &out._ipar;
 retain item_name;  
  set _par_ci (where = (substr(Label,1,1)="b"));
   item_name = compress(item||"|"||cat);  
   drop item label cat; 
+run;
+/*-- output files with format as needed for input to other macros --*/
+data &out._eta;
+ set _eta_temp;
 run;
 
 /*****************************************/
@@ -436,11 +440,10 @@ proc sql noprint;
 	into :_var1-:_var&_nd.
 	from _mem;
 quit;
-/*
 proc datasets;
 	delete %do _d=1 %to &_nd; &&_var&_d %end;;
 run; quit;
-*/
+
 goptions reset=all;
 *ods html;
 
