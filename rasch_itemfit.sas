@@ -401,7 +401,7 @@ run;
 		rename dependent=item;
 	run;
 %end;
-data &out._F_test;
+data &out._Ftest;
 	set _Ftest1-_Ftest&_nitems.;
 	keep item DF Fvalue ProbF;
 run;
