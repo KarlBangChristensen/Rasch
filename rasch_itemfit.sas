@@ -497,7 +497,7 @@ data _null_;
 run;
 %let f=&f.;
 data &out._FitResid;
-	set &out._infit_outfit;
+	set &out._outfit;
 	FitResid=&f.*(log(&N.)+log(outfit)-log(&f.))/(&N.*sqrt(outfitvar));
 	keep item FitResid;
 run;
