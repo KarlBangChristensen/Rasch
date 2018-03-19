@@ -491,6 +491,7 @@ run;
 data &out._FitResid;
 	set &out._infit_outfit;
 	FitResid=&f.*(log(&N.)+log(outfit)-log(&f.))/(&N.*sqrt(outfitvar));
+	keep item FitResid;
 run;
 
 /******************************/
