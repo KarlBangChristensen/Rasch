@@ -122,8 +122,8 @@ ods output nlmixed.fitstatistics	= _logl;
 /*-- estimation of item parameters - numerical maximization using PROC NLMIXED --*/
 
 OPTIONS MPRINT;
-
-%if %trim(%upcase(LAPLACE))='NO' %then %do;
+%let LAPLACE=&LAPLACE;
+%if %trim(%upcase(&LAPLACE))='NO' %then %do;
 proc nlmixed data=_new;
 %end;
 %else %do;
