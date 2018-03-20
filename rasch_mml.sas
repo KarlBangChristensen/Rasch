@@ -23,7 +23,7 @@ data set 'out_ipar' contains the item parameters (using PCM parametrization)
 
 **************************************************************************/
 
-%macro rasch_mml(DATA, ITEM_NAMES, OUT=MML, LAPLACE=YES); 
+%macro rasch_mml(DATA, ITEM_NAMES, OUT=MML, LAPLACE=NO); 
 
 options nomprint nonotes;
 option spool;
@@ -57,9 +57,10 @@ proc sort data = _item_names_unique; by item_sort; run;
 data _NULL_; 
  set _item_names_unique;
 %do _i=1 %to &_nitems.; 
- if _N_=&_i. then do; 	call symput("_item&_i", item_name); 
- 						call symput("_max&_i", max); 
-						call symput("_text&_i", item_text);
+ if _N_=&_i. then do; 	
+  call symput("_item&_i", item_name); 
+  call symput("_max&_i", max); 
+  call symput("_text&_i", item_text);
  end;  
 %end; 
 run; 
@@ -116,10 +117,18 @@ proc sort data = _new; by person; run;
 /*-- direct output to files --*/
 ods output nlmixed.parameterestimates	= _pe;
 ods output nlmixed.additionalestimates	= _ae;
-ods output nlmixed.fitstatistics		= _logl;
+ods output nlmixed.fitstatistics	= _logl;
 
 /*-- estimation of item parameters - numerical maximization using PROC NLMIXED --*/
-proc nlmixed data=_new QPOINTS=1; *- QPOINTS specified when calling the macro; 
+
+OPTIONS MPRINT;
+
+%if %trim(%upcase(LAPLACE))='NO' %then %do;
+proc nlmixed data=_new;
+%end;
+%else %do;
+proc nlmixed data=_new QPOINTS=1; 
+%end;
  PARMS %do _i=1 %to &_nitems.; %do _h=1 %to &&_max&_i; eta&_i._&_h.=0, %end; %end; sigma=1; *- initialize values of estimates to 0;
  BOUNDS 0<sigma; *- restriction on the residual standard error;
 *-- the likelihood; *- denominator ~ normalizing constant;
@@ -143,6 +152,8 @@ proc nlmixed data=_new QPOINTS=1; *- QPOINTS specified when calling the macro;
 	ESTIMATE "&&_item&_nitems..|&_h." -eta&_nitems._&_h. %if &_h.>1 %then %do; +eta&_nitems._%eval(&_h.-1) %end;; 
  %end; 
 run;
+
+OPTIONS NOMPRINT;
 
 /*-- create data set with item parameter estimates --*/
 proc sql noprint; 
