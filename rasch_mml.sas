@@ -15,7 +15,7 @@ ITEM_NAMES: This data set must contain the variables
 
 OUT: the name (default MML) given to output files
 
-QPOINTS: number of quadrature points to be used in the numeric integration
+adaptive quadrature used in the numeric integration
 
 ***************************************************************************
 
@@ -23,7 +23,7 @@ data set 'out_ipar' contains the item parameters (using PCM parametrization)
 
 **************************************************************************/
 
-%macro rasch_mml(DATA, ITEM_NAMES, OUT=MML, LAPLACE=NO); 
+%macro rasch_mml(DATA, ITEM_NAMES, OUT=MML); 
 
 options nomprint nonotes;
 option spool;
@@ -122,13 +122,7 @@ ods output nlmixed.fitstatistics	= _logl;
 /*-- estimation of item parameters - numerical maximization using PROC NLMIXED --*/
 
 OPTIONS MPRINT;
-%let LAPLACE=&LAPLACE;
-%if %trim(%upcase(&LAPLACE))='NO' %then %do;
 proc nlmixed data=_new;
-%end;
-%else %do;
-proc nlmixed data=_new QPOINTS=1; 
-%end;
  PARMS %do _i=1 %to &_nitems.; %do _h=1 %to &&_max&_i; eta&_i._&_h.=0, %end; %end; sigma=1; *- initialize values of estimates to 0;
  BOUNDS 0<sigma; *- restriction on the residual standard error;
 *-- the likelihood; *- denominator ~ normalizing constant;
@@ -152,8 +146,6 @@ proc nlmixed data=_new QPOINTS=1;
 	ESTIMATE "&&_item&_nitems..|&_h." -eta&_nitems._&_h. %if &_h.>1 %then %do; +eta&_nitems._%eval(&_h.-1) %end;; 
  %end; 
 run;
-
-OPTIONS NOMPRINT;
 
 /*-- create data set with item parameter estimates --*/
 proc sql noprint; 
