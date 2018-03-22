@@ -80,27 +80,17 @@ check data and fit Rasch model using conditional maximum likelihood (CML)
             	item_names=in,
 		out=CML);
 ```
-the item parameters
+the item parameters are put in the data set CML_ipar
 ```
 %rasch_ppar(	DATA=knox, 
-				ITEM_NAMES=in, 
-				DATA_IPAR=cml_ipar, 
-				out=pp_cml);
+		ITEM_NAMES=in, 
+		DATA_IPAR=cml_ipar, 
+		out=pp_cml);
 %rasch_itemfit(	DATA=knox, 
-				ITEM_NAMES=in, 
-				DATA_IPAR=cml_ipar, 
-				DATA_POPPAR=pp_cml_outdata, 
-				NCLASS=3, 
-				OUT=fitcml);
-proc sort data=fitcml_residuals;
-	by order;
-run;
-proc print data=fitcml_fitresid;
-	var outfit infit;
-run;
-/*
-proc export data=knox outfile="&path\knox.sav" dbms=sav; 
-run;
-*/
+		ITEM_NAMES=in, 
+		DATA_IPAR=cml_ipar, 
+		DATA_POPPAR=pp_cml_outdata, 
+		NCLASS=3, 
+		OUT=fitcml);
 ```
 
