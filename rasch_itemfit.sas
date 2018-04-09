@@ -45,7 +45,7 @@ data set 'out_fit' contains the item infit and outfit
 *options mprint notes;
 options nomprint nonotes;
 option spool;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 data _item_names_; 
@@ -540,6 +540,6 @@ quit;
 option notes;
 title ' ';
 
-ods html;
+ods exclude none;
 
 %mend rasch_itemfit;
