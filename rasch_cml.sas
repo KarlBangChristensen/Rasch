@@ -30,7 +30,7 @@ NOTE: item names should not be more than eight characters.
 options nocenter nonotes nosymbolgen nostimer nomprint;
 *options nocenter notes nosymbolgen nostimer mprint;
 goptions reset=all;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 /*-- data from previous macro --*/
@@ -446,8 +446,7 @@ proc datasets;
 run; quit;
 
 goptions reset=all;
-*ods html;
-
+ods exclude none; 
 /*****************************/
 /* end of macro              */
 /*****************************/
