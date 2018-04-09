@@ -26,7 +26,6 @@ data set 'out_outdata' is a copy of the input data set containing an estimate of
 
 %macro rasch_ppar(DATA, ITEM_NAMES, DATA_IPAR, OUT=PPAR); 
 
-*options mprint notes;
 options nomprint nonotes;
 option spool;
 ods exclude all; 
@@ -543,5 +542,5 @@ quit;
 option notes;
 title ' ';
 
-ods exclude all; 
+ods exclude none; 
 %mend rasch_ppar;
