@@ -21,7 +21,7 @@ data set 'item_names' contains grouped version of ITEM_NAMES
 %macro rasch_data(DATA, ITEM_NAMES, OUT=MML); 
 
 options nomprint nonotes;
-ods listing close; ods html close; 
+ODS EXCLUDE ALL;
 title ' ';
 
 /*-- if data sets specified within library, put in work library and refer to this for the remainder --*/
@@ -311,7 +311,6 @@ proc datasets;
 run; 
 quit;*/
 
-ods html file='n.html';
-
+ODS EXCLUDE NONE;
 
 %mend; 
