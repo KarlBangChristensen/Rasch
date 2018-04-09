@@ -29,7 +29,7 @@ data set 'out_outdata' is a copy of the input data set containing an estimate of
 *options mprint notes;
 options nomprint nonotes;
 option spool;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 data _item_names_; set &item_names.; item_name = upcase(item_name); run; 
@@ -543,6 +543,5 @@ quit;
 option notes;
 title ' ';
 
-ods html;
-
+ods exclude all; 
 %mend rasch_ppar;
