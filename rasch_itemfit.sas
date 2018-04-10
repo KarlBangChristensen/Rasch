@@ -1,16 +1,12 @@
 /**************************************************************************
 
-rasch_itemfit: 
-
-a SAS macro that can be used to calculate item fit statistics
-using the unconditional residual 
+rasch_itemfit: a SAS macro to calculate item fit statistics using the 
+unconditional residual 
 
 Y_iv=X_iv-E_iv 
 
 used in RUMM and WINSTEPS. Note that rasch_itemcfit is likely 
-to be a better choice
-
-Uses the macro rasch_etatemp
+to be a better choice. Uses the macro rasch_etatemp
 
 ***************************************************************************
 
