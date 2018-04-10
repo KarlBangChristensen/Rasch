@@ -26,7 +26,7 @@ NOTE: item names should not be more than eight characters.
 options nomprint nonotes;
 *options mprint notes;
 option spool;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 
@@ -266,7 +266,7 @@ quit;
 option notes;
 title ' ';
 
-ods html;
+ods exclude none; 
 /*****************************/
 /* end of macro              */
 /*****************************/
