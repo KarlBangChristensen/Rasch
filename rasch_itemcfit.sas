@@ -29,7 +29,7 @@ data set 'out_outdata_all' is a copy of the input data set containing conditiona
 *options mprint notes;
 options nomprint nonotes;
 option spool;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 data _item_names_; set &item_names.; item_name = upcase(item_name); run; 
@@ -586,6 +586,6 @@ quit;
 option notes;
 title ' ';
 
-ods html file='bent2.html';
+ods exclude none; 
 
 %mend rasch_itemcfit;
