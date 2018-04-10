@@ -27,7 +27,7 @@ data set 'out_ipar' contains the item parameters (using PCM parametrization)
 
 options nomprint nonotes;
 option spool;
-ods listing close; ods html close; 
+ods exclude all; 
 title ' ';
 
 /*-- data from previous macro --*/
@@ -223,6 +223,6 @@ quit;
 option notes;
 title ' ';
 
-ods html;
+ods exclude none;
 
 %mend rasch_mml;
