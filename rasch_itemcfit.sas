@@ -1,6 +1,6 @@
 /**************************************************************************
 
-ITEM_FIT: a SAS macro that can be used to calculate item fits
+RASCH_ITEMCFIT: SAS macro that can be used to calculate item fit statistics
 
 ***************************************************************************
 
