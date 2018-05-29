@@ -7,8 +7,9 @@ filename cfit url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/m
 filename fit  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_itemfit.sas';
 filename mml  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_mml.sas';
 filename pp   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_ppar.sas';
-filename pw   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_PW.sas';
 filename psi  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_PSI.sas';
+filename pw   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_PW.sas';
+filename q3   url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_Q3.sas';
 filename sim  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/master/rasch_simu.sas';
 %include cml;
 %include dat;
@@ -18,6 +19,7 @@ filename sim  url 'https://raw.githubusercontent.com/KarlBangChristensen/Rasch/m
 %include fit;
 %include mml;
 %include pp;
-%include pw;
 %include psi;
+%include pw;
+%include q3;
 %include sim;
