@@ -1,54 +1,83 @@
 /**************************************************************************
 macro to simulate responses to from a polytomous Rasch model 
 
-%simu(pfile=work.itempar, max=, thetafile=, outfile=)
+%simu(etafile=CML_eta, ppfile=, outfile=, estimate=MLE)
 
-pfile: this file contains the item parameters. Structure
-
-		ITEM    NAME $   PAR1  PAR2 ... PAR'max'
-		 1      item1    2.3   3.1  ...
-		 2      item2    1.1   0.3  ...
-
-thetafile: a file with the theta values. Structure
-
-		THETA
-		0.01
-		0.09
-		3.21
-		:
-outfile: is the name of the output file
-
-
-
-CHANGE TO READ OUTPUT FROM OTHER MACROS!!
-
-'ipar' type input
+etafile : file with item parameters. Output from, e.g., CML.
+ppfile  : file with person locations one line for each value (each 
+		  kind of person). 
+outfile : name of the output file, one line for each person.
+estimate: MLE (the default) or WLE
 
 ****************************************************************************/
 
-%macro rasch_simu(pfile, max, thetafile, outfile);
+%macro rasch_simu(etafile, ppfile, outfile, estimate=MLE);
 *options nomprint nomlogic nosymbolgen nonotes nostimer;
 *options mprint mlogic symbolgen notes stimer;
-
-/* calculate number of items - save names as macro variables */
-data _null_; set &pfile end=last;
-array par (&max) par1-par&max;
-call symput('_item'||trim(left(put(item,4.))), name);
-do i=1 to &max; 
-call symput ('_eta'||trim(left(put(item,4.)))||'_'||left(i),left(par(i))); 
-end;
-if last then call symput('_nitems',trim(left(put(item,4.))));
+options mprint;
+*;
+data &ppfile.;
+	set &ppfile.;
+	theta=&estimate.;
 run;
-
+* number of items;
+proc sql noprint;
+	select count(unique(_item_no)) into :_nitems from &etafile.;
+quit;
+%let _nitems=&_nitems.;
+* number of response options, item names;
+proc sql noprint;
+	select max(_score) 
+	into :max1-:max&_nitems 
+	from &etafile. 
+	order by _item_no;
+quit;
+proc sql noprint;
+	select unique(_item_name) 
+	into :item1-:item&_nitems. 
+	from &etafile. 
+	group by _item_no
+	order by _item_no;
+quit;
+* simulate;
+data &etafile;
+	set &etafile;
+	join=1;
+run;
+data &ppfile;
+	set &ppfile;
+	join=1;
+run;
+proc sql;
+	create table _out as select a.*,
+	b.theta
+	from &etafile. a left join &ppfile. b
+	on a.join=b.join;
+quit;
+proc sql;
+	create table _prob1 as select *,
+	exp(theta*score+eta)/sum(exp(theta*score+eta)) as prob
+	from _out
+	group by item, theta;
+quit;
+proc sort data=_prob1;
+	by item theta;
+run;
+proc transpose data=_prob1 out=_prob1_t;
+	by item theta;
+	id score;
+	var prob;
+run;
 data &outfile;
-set &thetafile;
-%do _it=1 %to &_nitems;
- _denom=1 %do _h=1 %to &max; +exp(theta*&_h+&&_eta&_it._&_h) %end;;
- _prob0=1/_denom; 
- %do _h=1 %to &max; _prob&_h=exp(theta*&_h+&&_eta&_it._&_h)/_denom; %end;
- &&_item&_it=rand('table',_prob0 %do _h=1 %to &max; ,_prob&_h %end;)-1;
-%end;
-drop _denom _prob0-_prob&max;
+	set _prob1_t;
+	%do i=1 %to &_nitems.;
+		if item="&&item&i" then do;
+			resp=rand('table' %do score=0 %to &&max&i; ,_&score. %end;)-1;
+		end;
+	%end;
 run;
 options notes stimer;
 %mend rasch_simu;
+
+* libname FIT 'p:\fit';
+* %rasch_simu(etafile=FIT.cml_eta,  ppfile=FIT.pp_CML_outdata, estimate=MLE, outfile=teest);
