@@ -1,13 +1,13 @@
 /**************************************************************************
 macro to simulate responses to from a polytomous Rasch model 
 
-%simu(etafile=CML_eta, ppfile=, outfile=, estimate=MLE)
+%simu(etafile=CML_eta, latfile=, outfile=, estimate=MLE)
 
-etafile : file with item parameters. Output from, e.g., CML.
-ppfile  : file with person locations one line for each value (each 
-		  kind of person). 
+etafile : file with item parameters. Output from, e.g., %rasch_CML.
+latfile : file with person locations one line for each value (each 
+	  kind of person), e.g. output-file OUT_latent from %rasch_CML.
 outfile : name of the output file, one line for each person.
-estimate: MLE (the default) or WLE
+estimate: MLE or WLE (the default).
 
 ****************************************************************************/
 
@@ -26,6 +26,12 @@ proc sql noprint;
 quit;
 %let _nitems=&_nitems.;
 * number of response options, item names;
+proc sql noprint;
+	select max(_score) 
+	into :maxmax
+	from &etafile. 
+quit;
+%put maxmax is &maxmax.;
 proc sql noprint;
 	select max(_score) 
 	into :max1-:max&_nitems 
@@ -56,28 +62,40 @@ proc sql;
 quit;
 proc sql;
 	create table _prob1 as select *,
-	exp(theta*score+eta)/sum(exp(theta*score+eta)) as prob
+	exp(theta*_score+estimate)/sum(exp(theta*_score+estimate)) as prob
 	from _out
-	group by item, theta;
+	group by _item_name, theta;
 quit;
+
 proc sort data=_prob1;
-	by item theta;
+	by theta _item_name;
 run;
-proc transpose data=_prob1 out=_prob1_t;
-	by item theta;
-	id score;
+proc transpose data=_prob1(where=(prob ne .)) out=_prob1_t prefix=p;
+	by theta _item_name;
 	var prob;
+run;
+data _prob1_t;
+	set _prob1_t;
+	resp=rand('table' %do sc=1 %to %eval(&maxmax+1); ,p&sc. %end;)-1;
+run;
+data &outfile.;	
+	merge 
+	%do i=1 %to &_nitems.;
+		_prob1_t(where=(_item_name="&&item&i") rename=(resp=&&item&i);
+	%end;
+	by theta;
 run;
 data &outfile;
 	set _prob1_t;
 	%do i=1 %to &_nitems.;
-		if item="&&item&i" then do;
-			resp=rand('table' %do score=0 %to &&max&i; ,_&score. %end;)-1;
+		if _item_name="&&item&i" then do;
+			&&item&i=rand('table' %do sc=1 %to %eval(&&max&i+1); ,p&sc. %end;)-1;
 		end;
+		output;
 	%end;
 run;
 options notes stimer;
 %mend rasch_simu;
 
-* libname FIT 'p:\fit';
-* %rasch_simu(etafile=FIT.cml_eta,  ppfile=FIT.pp_CML_outdata, estimate=MLE, outfile=teest);
+libname FIT 'p:\fit';
+%rasch_simu(etafile=FIT.cml_eta,  ppfile=FIT.pp_CML_latent, estimate=MLE, outfile=teest);
