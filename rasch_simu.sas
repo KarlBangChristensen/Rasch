@@ -78,22 +78,16 @@ data _prob1_t;
 	set _prob1_t;
 	resp=rand('table' %do sc=1 %to %eval(&maxmax+1); ,p&sc. %end;)-1;
 run;
+%do i=1 %to &_nitems.;
+	data _prob1_t&i;
+		set _prob1_t;
+		where _item_name="&&item&i";
+		rename resp=&&item&i;
+	run;
+%end;
 data &outfile.;	
-	merge 
-	%do i=1 %to &_nitems.;
-		_prob1_t(where=(_item_name="&&item&i") rename=(resp=&&item&i));
-	%end;
+	merge _prob1_t1-_prob1_t&_nitems.;
 	by theta;
 run;
 options notes stimer;
 %mend rasch_simu;
-
-proc contents data=_prob1_t;
-run;
-
-data _prob1_t(where=(_item_name="I4") /*rename=(resp=I4)*/);
-run;
-
-
-libname FIT 'p:\fit';
-%rasch_simu(etafile=FIT.cml_eta,  ppfile=FIT.pp_CML_latent, estimate=MLE, outfile=teest);
