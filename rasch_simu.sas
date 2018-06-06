@@ -5,7 +5,7 @@ macro to simulate responses to from a polytomous Rasch model
 
 etafile : file with item parameters. Output from, e.g., %rasch_CML.
 latfile : file with person locations one line for each value (each 
-	  kind of person), e.g. output-file OUT_latent from %rasch_CML.
+		  kind of person), e.g. output-file OUT_latent from %rasch_CML.
 outfile : name of the output file, one line for each person.
 estimate: MLE or WLE (the default).
 
@@ -87,6 +87,13 @@ data &outfile.;
 run;
 options notes stimer;
 %mend rasch_simu;
+
+proc contents data=_prob1_t;
+run;
+
+data _prob1_t(where=(_item_name="I4") /*rename=(resp=I4)*/);
+run;
+
 
 libname FIT 'p:\fit';
 %rasch_simu(etafile=FIT.cml_eta,  ppfile=FIT.pp_CML_latent, estimate=MLE, outfile=teest);
