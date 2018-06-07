@@ -1,4 +1,21 @@
-* macro to compute the person separation index;
+/**************************************************************************
+macro to compute the person separation index in a Rasch measurement model
+
+%rasch_PSI(item_names, outdata, latent);
+
+item_names: data set that contains information about the items. This data 
+set should contain the variables 
+
+	item_name: item names
+	item_text (optional): item text for plots 
+	max: maximum score on the item
+	group: integer specifying item groups with equal parameters. Groups have to be scored 1,2,3, ...	
+
+outdata: the name of the output data set
+
+latent: the name of the variable containing the person location estimate.
+
+**************************************************************************/
 
 %macro rasch_PSI(item_names, outdata, latent);
 	proc sql noprint;
