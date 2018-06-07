@@ -1,17 +1,16 @@
-/********************************************************************************
-SAS macro for computing the Yen (1981) Q3 and the two versions of it (Q3,max and 
-Q3,*) discussed by Christensen, Makransky & Horton (2017). 
+/*************************************************************************************
+SAS macro for computing the Yen (1981) Q3 and the two versions of it (Q3,max and Q3,*) 
+discussed by Christensen, Makransky & Horton (2017). 
 
 Yen (1984). Effects of local item dependence on the fit and equating performance 
 of the three-parameter logistic model. Applied Psychological Measurement, 8, 125-145. 
 https://doi.org/10.1177/014662168400800201
 
-Christensen, Makransky, Horton (2017). Critical Values for Yen’s Q3: Identifica-
-tion of Local Dependence in the Rasch Model Using Residual Correlations. Applied 
-Psychological Measurement, vol 41, 178 - 194, 2017. 
+Christensen, Makransky, Horton (2017). Critical Values for Yen’s Q3: Identification 
+of Local Dependence in the Rasch Model Using Residual Correlations. Applied 
+Psychological Measurement, vol 41, 178-194, 2017. 
 https://doi.org/10.1177/0146621616677520
-
-********************************************************************************/
+*************************************************************************************/
 %macro rasch_Q3(name);
 	options nomprint nonotes;
 	ods exclude all;
