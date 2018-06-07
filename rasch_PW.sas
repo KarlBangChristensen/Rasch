@@ -112,7 +112,6 @@ data _pw;
 run;
 
 /*-- fit poisson model --*/
-ods listing close; 
 ods output genmod.parameterestimates=_pf;
 proc genmod data=_pw; 
 	class %do _i=1 %to &_nitems.; %do _j=&_i+1 %to &_nitems; t&_i._&_j %end; %end;;
@@ -120,7 +119,6 @@ proc genmod data=_pw;
 	%do _i=1 %to &_nitems.; %do _j=&_i+1 %to &_nitems; t&_i._&_j %end; %end;/d=p noint link=log maxiter=10000; 
 	*repeated subject = person / covb;
 run;
-ods listing; 
 
 /*-- standardize parameters - create output data set with parameter estimates --*/
 data _par _par0; 
@@ -227,7 +225,6 @@ proc sort data = &out._ipar out = &out._ipar (drop = item_sort score); by item_s
 /* delete temporary data sets */
 /******************************/
 
-ods listing close; 
 ods output Datasets.Members=_mem;
 
 proc datasets; 
