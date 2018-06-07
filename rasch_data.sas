@@ -1,17 +1,15 @@
 /**************************************************************************
-
-***************************************************************************
-
-DATA: This data must contain the items (scored 0,1, .. ,'max') (the number of response categories 'max' can differ between items).  
+DATA: This data must contain the items (scored 0,1, .. ,'max'), but the 
+number of response categories 'max' can differ between items.  
 
 ITEM_NAMES: This data set must contain the variables 
 
-	item_name: 			  item names
+	item_name: item names
 	item_text (optional): item text for plots 
-	max: 				  maximum score on the item
-	group (optional): 	  specification of item groups (OBS: grouped items must have same maximum score) 
+	max: maximum score on the item
+	group: specification of item groups (OBS: items in same group must 
+	have same maximum score) 
 
-***************************************************************************
 
 data set 'data' contains grouped version of DATA
 data set 'item_names' contains grouped version of ITEM_NAMES
