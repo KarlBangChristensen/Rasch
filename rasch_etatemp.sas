@@ -1,11 +1,20 @@
 /**************************************************************************
 
-ETATEMP: a SAS macro that can be used to create a temporary data set wiht eta parameters
+SAS macro that can be used to create a temporary data set with eta item 
+parameters. The Rasch model assumes 
 
-***************************************************************************
+P(X=x|theta)=exp(x*theta+eta(x))/[sum_k exp(k*theta+eta[k])]
 
-INPUT: DATA_IPAR
-	   ITEM_NAMES
+and typically the item parameter vector eta=(eta[0],eta[1],...,eta[max])
+=(0,eta[1],...,eta[max]) is interpreted using the thresholds beta[l]
+=-eta[l]+eta[l-1]. Call macro using
+
+%etatemp(DATA_IPAR, ITEM_NAMES); 
+
+where
+
+DATA_IPAR:  is the output data set 'out_IPAR' data set from %rasch_CML
+ITEM_NAMES: the data set with the item names and information used 
 
 **************************************************************************/
 
