@@ -12,9 +12,9 @@ estimate: MLE or WLE (the default).
 ****************************************************************************/
 
 %macro rasch_simu(etafile, ppfile, outfile, estimate=MLE);
-*options nomprint nomlogic nosymbolgen nonotes nostimer;
+options nomprint nomlogic nosymbolgen nonotes nostimer;
 *options mprint mlogic symbolgen notes stimer;
-options mprint;
+ods exclude all;
 *;
 data &ppfile.;
 	set &ppfile.;
@@ -90,4 +90,5 @@ data &outfile.;
 	by theta;
 run;
 options notes stimer;
+ods exclude none;
 %mend rasch_simu;
