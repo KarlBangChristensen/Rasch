@@ -121,7 +121,6 @@ ods output nlmixed.fitstatistics	= _logl;
 
 /*-- estimation of item parameters - numerical maximization using PROC NLMIXED --*/
 
-OPTIONS MPRINT;
 proc nlmixed data=_new;
  PARMS %do _i=1 %to &_nitems.; %do _h=1 %to &&_max&_i; eta&_i._&_h.=0, %end; %end; sigma=1; *- initialize values of estimates to 0;
  BOUNDS 0<sigma; *- restriction on the residual standard error;
