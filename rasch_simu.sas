@@ -7,8 +7,6 @@ etafile : file with item parameters. Output from, e.g., %rasch_CML.
 latfile : file with person locations one line for each value (each 
 		  kind of person), e.g. output-file OUT_latent from %rasch_CML.
 outfile : name of the output file, one line for each person.
-estimate: MLE or WLE (the default).
-
 ****************************************************************************/
 
 %macro rasch_simu(etafile, ppfile, outfile, estimate=MLE);
