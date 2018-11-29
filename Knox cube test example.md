@@ -96,5 +96,5 @@ this generates an output data set `pp_cml_outdata`. Compute item fit statistics 
 		NCLASS=3, 
 		OUT=fitcml);
 ```
-this generates five output data sets `fitcml_chisq`,  `fitcml_fitresid`,  `fitcml_ftest`,  `fitcml_infit`,  `fitcml_outfit'.
+this generates five output data sets `fitcml_chisq`,  `fitcml_fitresid`,  `fitcml_ftest`,  `fitcml_infit`,  `fitcml_outfit`.
 
