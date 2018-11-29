@@ -87,7 +87,7 @@ the item parameters are put in the data set `CML_ipar`. Estimate the person loca
 		DATA_IPAR=cml_ipar, 
 		out=pp_cml);
 ```
-this generates an output data set `pp_cml_outdata`
+this generates an output data set `pp_cml_outdata`. Compute item fit statistics using
 ```
 %rasch_itemfit(	DATA=knox, 
 		ITEM_NAMES=in, 
@@ -96,4 +96,5 @@ this generates an output data set `pp_cml_outdata`
 		NCLASS=3, 
 		OUT=fitcml);
 ```
+this generates five output data sets `fitcml_chisq`,  `fitcml_fitresid`,  `fitcml_ftest`,  `fitcml_infit`,  `fitcml_outfit'.
 
