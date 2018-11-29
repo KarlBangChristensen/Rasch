@@ -80,14 +80,14 @@ check data and fit Rasch model using conditional maximum likelihood (CML)
             	item_names=in,
 		out=CML);
 ```
-the item parameters are put in the data set CML_ipar. Estimate the person locations using
+the item parameters are put in the data set `CML_ipar`. Estimate the person locations using
 ```
 %rasch_ppar(	DATA=knox, 
 		ITEM_NAMES=in, 
 		DATA_IPAR=cml_ipar, 
 		out=pp_cml);
 ```
-this generates an output data set pp_cml_outdata
+this generates an output data set `pp_cml_outdata`
 ```
 %rasch_itemfit(	DATA=knox, 
 		ITEM_NAMES=in, 
