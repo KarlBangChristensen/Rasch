@@ -18,10 +18,11 @@ example:
 options nomprint nomlogic nosymbolgen nonotes nostimer;
 *options mprint mlogic symbolgen notes stimer;
 ods exclude all;
-%let etafile=etafile;
-%let ppfile=ppfile;
-%let estimate=WLE; 
-%let outfile=simu;
+
+%let etafile=&etafile.;
+%let ppfile=&ppfile.;
+%let estimate=&estimate.; 
+%let outfile=&outfile.;
 
 data _ppfile;
 	set &ppfile.;
