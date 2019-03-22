@@ -26,6 +26,8 @@ DATA_POPPAR: The output data set from macro %rasch_ppar, &out_outdata
 
 NCLASS: The number of class intervals
 
+PPAR: choose between MLE and WLE (the default)
+
 OUT: the name (default MML) given to output files
 
 ***************************************************************************
@@ -34,7 +36,7 @@ data set 'out_fit' contains the item infit and outfit
 
 **************************************************************************/
 
-%macro rasch_itemfit(DATA, ITEM_NAMES, DATA_IPAR, DATA_POPPAR, NCLASS, OUT=MML); 
+%macro rasch_itemfit(DATA, ITEM_NAMES, DATA_IPAR, DATA_POPPAR, NCLASS, PPAR=WLE, OUT=MML); 
 
 %let nclass=&nclass;
 
@@ -156,18 +158,18 @@ run;
 
 
 proc sql noprint;
- 	select count(distinct(MLE))
+ 	select count(distinct(&PPAR.))
 	into :n_theta
 	from &DATA_POPPAR.
-	where MLE ne .;
+	where &PPAR. ne .;
 quit;
 %let n_theta=&n_theta;
 
 proc sql noprint;
-	select distinct(MLE)
+	select distinct(&PPAR.)
 	into :theta_esti1 -:theta_esti&n_theta
 	from &DATA_POPPAR.
-	where MLE ne .;
+	where &PPAR. ne .;
 quit;
 
 data _prob1;
@@ -180,41 +182,41 @@ run;
 
 data _prob2; 
 	set _prob1; 
-	MLE = theta_esti*1;
+	&PPAR. = theta_esti*1;
 run; 
 
 proc sql;
 	create table _prob3 as select 
 		*,
-		exp(_score*MLE+estimate)/(sum(exp(_score*MLE+estimate))) as _prob
+		exp(_score*&PPAR.+estimate)/(sum(exp(_score*&PPAR.+estimate))) as _prob
 	from _prob2
-	group by _item_no, MLE
-	order by _item_no, _score, MLE;
+	group by _item_no, &PPAR.
+	order by _item_no, _score, &PPAR.;
 quit;
 
 proc sql;
   	create table _mean_var as select distinct 
 	_item_no,
-	MLE,
+	&PPAR.,
 	sum(_score*_prob) as _mean,
 	sum((_score**2)*_prob)-(sum(_score*_prob))**2 as _var
 	from _prob3 
-	group by _item_no, MLE
-	order by _item_no, MLE;
+	group by _item_no, &PPAR.
+	order by _item_no, &PPAR.;
 quit;
 
 proc sql;
   	create table mean_var2 as select distinct 
 	_item_no,
-	MLE,
+	&PPAR.,
 	sum(_score*_prob) as _EX,
 	sum((_score**2)*_prob) as _EX2,
 	sum((_score**3)*_prob) as _EX3,
 	sum((_score**4)*_prob) as _EX4,
 	sum((_score**2)*_prob)-(sum(_score*_prob))**2 as _VX
 	from _prob3 
-	group by _item_no, MLE
-	order by _item_no, MLE;
+	group by _item_no, &PPAR.
+	order by _item_no, &PPAR.;
 quit;
 
 proc sql;
@@ -222,30 +224,30 @@ proc sql;
 	estimate,
 	_score,
 	_item_no,
-	MLE,
+	&PPAR.,
 	_prob,
 	sum(_score*_prob) as _mean,
 	sum((_score**2)*_prob)-(sum(_score*_prob))**2 as _var
 	from _prob3 
-	group by _item_no, MLE
-	order by _item_no,_score, MLE;
+	group by _item_no, &PPAR.
+	order by _item_no,_score, &PPAR.;
 quit;
 
 proc sql;
   	create table _prob5 as select unique
 	_item_no,
-	MLE,
+	&PPAR.,
 	_mean,
 	_var,
 	sum((_score-_mean)**4*_prob) as _kurt,
 	_var**2 as _var2
 	from _prob4 
-	group by _item_no, MLE
-	order by _item_no, MLE;
+	group by _item_no, &PPAR.
+	order by _item_no, &PPAR.;
 quit;
 
 * kurtosis;
-data %do _i=1 %to &_nitems.; _kurt&_i.(keep=MLE _kurt&_i.) %end;;
+data %do _i=1 %to &_nitems.; _kurt&_i.(keep=&PPAR. _kurt&_i.) %end;;
 	set _prob5;
 	%do _i=1 %to &_nitems.;
 		if _item_no=&_i. then do; 
@@ -256,7 +258,7 @@ data %do _i=1 %to &_nitems.; _kurt&_i.(keep=MLE _kurt&_i.) %end;;
 run;
 
 * variances and squared variances;
-data %do _i=1 %to &_nitems.; _var&_i.(keep=MLE _v_&_i. _v2_&_i.) %end;;
+data %do _i=1 %to &_nitems.; _var&_i.(keep=&PPAR. _v_&_i. _v2_&_i.) %end;;
 	set _prob5;
 	%do _i=1 %to &_nitems.;
 		if _item_no=&_i. then do;
@@ -276,7 +278,7 @@ run;
 				b._mean as _mean1 format=8.6,
 				b._var as _var1 format=8.6
 			from &DATA_POPPAR. a left join _mean_var b
-			on a.MLE=b.MLE
+			on a.&PPAR.=b.&PPAR.
 			where b._item_no=1;
 		quit; 
 	%end;
@@ -287,7 +289,7 @@ run;
 				b._mean as _mean&_i.,
 				b._var as _var&_i.
 			from _z%eval(&_i.-1) a left join _mean_var b
-			on a.MLE=b.MLE
+			on a.&PPAR.=b.&PPAR.
 			where b._item_no=&_i.;
 		quit; 
 	%end;
@@ -295,7 +297,7 @@ run;
 proc sql;
 	create table _residuals as select 
 		order,
-		MLE
+		&PPAR.
 		%do _i=1 %to &_nitems.;
 			, _var&_i.
 			, (&&_item&_i-_mean&_i.) as _y&_i.
@@ -312,29 +314,29 @@ quit;
 			b._v_&_i., b._v2_&_i.,
 			c._kurt&_i.
 		from _residuals a 
-		left join _var&_i. b on a.MLE=b.MLE
-		left join _kurt&_i. c on a.MLE=c.MLE;
+		left join _var&_i. b on a.&PPAR.=b.&PPAR.
+		left join _kurt&_i. c on a.&PPAR.=c.&PPAR.;
 	quit;
 %end;
 
 * code class intervals for chi-square item fit statistic;
 proc freq data=_z&_nitems;
 	ods output Freq.Table1.OneWayFreqs=_classintervals;
-	table MLE;
+	table &PPAR.;
 run;
 data _classintervals; 
 	set _classintervals; 
 	classinterval=floor(&nclass*cumpercent/100-.00001)+1;
 run;
 proc sort data=_z&_nitems.;
-	by MLE;
+	by &PPAR.;
 run;
 proc sort data=_classintervals;
-	by MLE;
+	by &PPAR.;
 run;
 data _chisq; 
 	merge _z&_nitems. _classintervals;
-	by MLE;
+	by &PPAR.;
 run;
 proc sql;
 	create table _chisq2 as select 
@@ -375,16 +377,16 @@ run;
 
 * output data set with item residuals;
 data &out._residuals(rename=(%do _i=1 %to &_nitems.; _z&_i.=&&_item&_i %end;));
- 	set _residuals(keep=MLE order %do _i=1 %to &_nitems.; _z&_i. %end;);
+ 	set _residuals(keep=&PPAR. order %do _i=1 %to &_nitems.; _z&_i. %end;);
 run;
 
 * F-test item fit statistics;
 proc sort data=&out._residuals;
-	by MLE;
+	by &PPAR.;
 run;
 data _Ftest; 
 	merge &out._residuals _classintervals;
-	by MLE;
+	by &PPAR.;
 run;
 %do _i=1 %to &_nitems;
 	ods output ANOVA.ANOVA.&&_item&_i...ModelANOVA=_Ftest&_i;
@@ -482,7 +484,7 @@ run;
 * FitResid;
 
 proc sql noprint;
-	select count (MLE) into :N from _residuals;
+	select count (&PPAR.) into :N from _residuals;
 quit;
 %let N=&N;
 data _null_;
@@ -528,11 +530,12 @@ proc sql noprint;
 	into :_var1-:_var&_nd.
 	from _mem;
 quit;
-
+/*
 proc datasets;
 	delete %do _d=1 %to &_nd; &&_var&_d %end; beta eta_temp;
 run;
 quit;
+*/
 option notes;
 title ' ';
 
