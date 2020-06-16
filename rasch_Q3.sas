@@ -15,7 +15,7 @@ https://doi.org/10.1177/0146621616677520
 	options nomprint nonotes;
 	ods exclude all;
 	*;
-	proc contents data=&name._residuals(drop=order MLE);
+	proc contents data=&name._residuals(drop=order MLE WLE);
 		ods output Contents.DataSet.Variables=_items;
 	run;
 	proc sql noprint;
