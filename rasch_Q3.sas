@@ -60,7 +60,9 @@ https://doi.org/10.1177/0146621616677520
 	proc sql;
 		select max(corr)-mean(corr) into :_Q3_star from _corr_long;
 	quit;
+/*
 	proc datasets noprint;
 		delete _corr_long _corr;
 	quit;
+*/
 %mend rasch_Q3;
