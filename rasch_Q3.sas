@@ -30,6 +30,9 @@ https://doi.org/10.1177/0146621616677520
 	%end;
 	proc corr data=&name._residuals(drop=order MLE WLE);
 		ods output Corr.PearsonCorr=_corr;
+		var 
+		%do _i=1 %to &_nitems; &&_item&_i %end;
+		;
 	run;
 	data _corr_long; 
 		set _corr;
