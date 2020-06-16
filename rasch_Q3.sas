@@ -28,7 +28,7 @@ https://doi.org/10.1177/0146621616677520
 	%do _i=1 %to &_nitems;
 		%let _item&_i=&&_item&_i;
 	%end;
-	proc corr data=&name._residuals(drop=order MLE);
+	proc corr data=&name._residuals(drop=order MLE WLE);
 		ods output Corr.PearsonCorr=_corr;
 	run;
 	data _corr_long; 
