@@ -50,7 +50,7 @@ https://doi.org/10.1177/0146621616677520
 	ods exclude none;
 	title 'average correlation';
 	proc sql;
-		select mean(corr) into :_averagecorr from _corr_long;
+		select mean(corr) into :_averagecorr from _corr_long where (corr ne .);
 	quit;
 	title 'maximum correlation Q3_max';
 	proc sql;
