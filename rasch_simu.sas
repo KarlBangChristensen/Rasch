@@ -1,7 +1,7 @@
 /**************************************************************************
 macro to simulate responses to from a dichotomous Rasch model 
 
-%rasch_simu(etafile, ppfile, estimate, outfile)
+%rasch_simu(etafile, ppfile, idvar, estimate, outfile)
 
 etafile : file with item parameters. Output from, e.g., %rasch_CML.
 ppfile  : file with person locations one line for each value (e.g. each person). Output from, e.g., %rasch_CML (OUT_latent).
